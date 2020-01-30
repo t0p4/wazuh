@@ -83,7 +83,8 @@ void * fim_run_integrity(void * args) {
 // LCOV_EXCL_STOP
 
 void fim_sync_checksum() {
-    char *start, *top;
+    char *start = NULL;
+    char *top = NULL;
     EVP_MD_CTX * ctx = EVP_MD_CTX_create();
     EVP_DigestInit(ctx, EVP_sha1());
 
@@ -122,10 +123,14 @@ void fim_sync_checksum() {
 
         char * plain = dbsync_check_msg("syscheck", INTEGRITY_CHECK_GLOBAL, fim_sync_cur_id, start, top, NULL, hexdigest);
         fim_send_sync_msg(plain);
+<<<<<<< HEAD
 
         free(start);
         free(top);
         free(plain);
+=======
+        os_free(plain);
+>>>>>>> b24936903... Fixed memory leaks reported by Coverity
 
     } else { // If database is empty
         char * plain = dbsync_check_msg("syscheck", INTEGRITY_CLEAR, fim_sync_cur_id, NULL, NULL, NULL, NULL);
@@ -134,6 +139,8 @@ void fim_sync_checksum() {
     }
 
     end:
+        os_free(start);
+        os_free(top);
         EVP_MD_CTX_destroy(ctx);
 }
 
