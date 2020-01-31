@@ -123,14 +123,7 @@ void fim_sync_checksum() {
 
         char * plain = dbsync_check_msg("syscheck", INTEGRITY_CHECK_GLOBAL, fim_sync_cur_id, start, top, NULL, hexdigest);
         fim_send_sync_msg(plain);
-<<<<<<< HEAD
-
-        free(start);
-        free(top);
-        free(plain);
-=======
         os_free(plain);
->>>>>>> b24936903... Fixed memory leaks reported by Coverity
 
     } else { // If database is empty
         char * plain = dbsync_check_msg("syscheck", INTEGRITY_CLEAR, fim_sync_cur_id, NULL, NULL, NULL, NULL);
